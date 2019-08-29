@@ -25,7 +25,7 @@
                 <th scope="col">Nome</th>
                 <th scope="col">Email</th>                
                 <th scope="col">Deleta</th>
-                <th scope="col"></th>
+                <th scope="col">Atualizar</th>
             </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
                 <td th:text="${aluno.nome}"></td>
                 <td th:text="${aluno.email}"></td>                
                 <td><a th:href="@{'/excluir_aluno/' + ${aluno.id}}"><input type="Reset" id="excluir_aluno" value="Deletar" height="16" width="16"></a></td>                
-                <td><a th:href="@{'/atualizar_aluno/' + ${aluno.id}}"><input height="16" width="16"></a></td>                
+                <td><a th:href="@{'/atualizar_aluno/' + ${aluno.id}}"><input id="atualizar_aluno" value="Atualizar" height="16" width="16"></a></td>                
             </tr>
         </tbody>
     </table>

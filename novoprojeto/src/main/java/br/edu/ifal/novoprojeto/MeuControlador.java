@@ -73,4 +73,6 @@ public class MeuControlador {
         return retorno;
     }
 
+    @RequestMapping("")
+
 }
