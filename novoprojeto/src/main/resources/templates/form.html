@@ -1,0 +1,97 @@
+
+   <!doctype html>
+   <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"  layout:decorate="layout">
+   <meta charset="UTF-8" />
+   
+     <body>
+        <script>
+   
+           function validacaoEmail(field) {
+             
+   usuario = field.value.substring(0, field.value.indexOf("@"));
+   dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
+   if ((usuario.length >=1) &&
+      (dominio.length >=3) &&
+      (usuario.search("@")==-1) &&
+      (dominio.search("@")==-1) &&
+      (usuario.search(" ")==-1) &&
+      (dominio.search(" ")==-1) &&
+      (dominio.search(".")!=-1) &&     
+      (dominio.indexOf(".") >=1)&&
+      (dominio.lastIndexOf(".") < dominio.length - 1)) {
+   document.getElementById("msgemail").innerHTML="E-mail válido";
+   alert("email valido");
+   }
+   
+           function verificarTexto(){
+   
+               if(form.texto.value == ""){
+                   form.texto.style = "border:2px solid red;";
+               }
+   
+           }
+   
+       </script>
+   
+   <title>Page Title</title>
+   </head>
+   
+   <body>
+   
+   <h1>Formulário de cadastro</h1>
+   
+   <fieldset>
+   
+   <form method="POST" action="cadastro_aluno">
+    <b>Nome:</b>
+    <input type="text" name="nome">
+    <br><br>
+    <b>E-mail:</b>
+    <input type="text" name="email">
+    <br><br>
+   
+   
+   
+   <b>CPF:</b>
+     <td align="left">
+      <input type="text" name="cpf" size="11" maxlength="11">
+     </td>
+   
+   <p><b>Módulo:</b></p> 
+    <input type="radio" name="modulo" value="primeiro" checked> Primeiro<br>
+    <input type="radio" name="modulo" value="segundo"> Segundo<br>
+    <input type="radio" name="modulo" value="terceiro"> Terceiro<br><br>
+   
+   
+   <p><b>Áreas de atuação preferidas: </b></p>
+    <input type="checkbox" name="area" value="programação" > Programação<br>
+    <input type="checkbox" name="area" value="redes" > Redes de computadores<br>
+    <input type="checkbox" name="area" value="manutenção"> Manutenção de computadores<br>
+   
+   
+    <p><b>Senha: </b><input type="password" name="senha" id="inputSenha" size="20" maxlength="16" required='true'/></p>
+    <p><b>Confirmar senha:</b> <input type="password" name="confirmarSenha" id="inputSenha2" size="20" maxlength="16" required='true'/></p>
+    <p><input type="submit" id="inputSubmit" value="Gravar"/></p>
+    <input type="Reset" value="Limpar">
+   </form>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script>
+    $(function(){
+       $("#inputSubmit").click(function(){
+        var senha = $("#inputSenha").val();
+        var senha2 = $("#inputSenha2").val();
+        if(senha != senha2){
+          event.preventDefault();
+          alert("As senhas não são iguais!");
+        }
+      });
+    });
+   
+   } 
+   </script>
+   
+   </fieldset>
+   
+   <p th:text="${mensagem}"></p>
+     </body>
+   </html>
