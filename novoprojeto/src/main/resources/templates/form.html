@@ -1,97 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layout">
 
-   <!doctype html>
-   <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"  layout:decorate="layout">
-   <meta charset="UTF-8" />
-   
-     <body>
-        <script>
-   
-           function validacaoEmail(field) {
-             
-   usuario = field.value.substring(0, field.value.indexOf("@"));
-   dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
-   if ((usuario.length >=1) &&
-      (dominio.length >=3) &&
-      (usuario.search("@")==-1) &&
-      (dominio.search("@")==-1) &&
-      (usuario.search(" ")==-1) &&
-      (dominio.search(" ")==-1) &&
-      (dominio.search(".")!=-1) &&     
-      (dominio.indexOf(".") >=1)&&
-      (dominio.lastIndexOf(".") < dominio.length - 1)) {
-   document.getElementById("msgemail").innerHTML="E-mail válido";
-   alert("email valido");
-   }
-   
-           function verificarTexto(){
-   
-               if(form.texto.value == ""){
-                   form.texto.style = "border:2px solid red;";
-               }
-   
-           }
-   
-       </script>
-   
-   <title>Page Title</title>
-   </head>
-   
-   <body>
-   
-   <h1>Formulário de cadastro</h1>
-   
-   <fieldset>
-   
-   <form method="POST" action="cadastro_aluno">
-    <b>Nome:</b>
-    <input type="text" name="nome">
-    <br><br>
-    <b>E-mail:</b>
-    <input type="text" name="email">
-    <br><br>
-   
-   
-   
-   <b>CPF:</b>
-     <td align="left">
-      <input type="text" name="cpf" size="11" maxlength="11">
-     </td>
-   
-   <p><b>Módulo:</b></p> 
-    <input type="radio" name="modulo" value="primeiro" checked> Primeiro<br>
-    <input type="radio" name="modulo" value="segundo"> Segundo<br>
-    <input type="radio" name="modulo" value="terceiro"> Terceiro<br><br>
-   
-   
-   <p><b>Áreas de atuação preferidas: </b></p>
-    <input type="checkbox" name="area" value="programação" > Programação<br>
-    <input type="checkbox" name="area" value="redes" > Redes de computadores<br>
-    <input type="checkbox" name="area" value="manutenção"> Manutenção de computadores<br>
-   
-   
-    <p><b>Senha: </b><input type="password" name="senha" id="inputSenha" size="20" maxlength="16" required='true'/></p>
-    <p><b>Confirmar senha:</b> <input type="password" name="confirmarSenha" id="inputSenha2" size="20" maxlength="16" required='true'/></p>
-    <p><input type="submit" id="inputSubmit" value="Gravar"/></p>
-    <input type="Reset" value="Limpar">
-   </form>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-   <script>
-    $(function(){
-       $("#inputSubmit").click(function(){
-        var senha = $("#inputSenha").val();
-        var senha2 = $("#inputSenha2").val();
-        if(senha != senha2){
-          event.preventDefault();
-          alert("As senhas não são iguais!");
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<meta charset="UTF-8" />
+
+<head>
+
+
+
+    <title>Formulário</title>
+
+</head>
+<script type="text/javascript">
+    function verificarNome() {
+        var nome = document.getElementById("nome").value;
+        var erroNome = document.getElementById("Erronome");
+        if (nome.length < 4) {
+            ErroNome.innerHTML = ' O Nome precisa ter mais de 3 caracteres!';
+            ErroNome.style = "color: red";
+            return false;
         }
-      });
-    });
-   
-   } 
-   </script>
-   
-   </fieldset>
-   
-   <p th:text="${mensagem}"></p>
-     </body>
-   </html>
+        else if (nome.length >= 4) {
+            ErroNome.innerHTML = ' ';
+            return true;
+        }
+    }
+    function verificarCPF() {
+        var cpf = document.getElementById("cpf").value;
+        var ErroCPF = document.getElementById("ErroCPF");
+        if (cpf.length < 11) {
+            // alert("O CPF precisa ter 11 digitos!");
+            ErroCPF.innerHTML = ' O CPF precisa ter 11 digitos!';
+            ErroCPF.style = "color: red";
+            return false;
+        }
+        else if (cpf.length >= 11) {
+            ErroCPF.innerHTML = ' ';
+            return true;
+        }
+    }
+    function validarEmail() {
+        var email = document.getElementById("email").value;
+        var ErroEmail = document.getElementById("ErroEmail");
+        var ponto;
+        var arroba;
+        for (var i = 0; i < email.length; i++) {
+            var check = email.charAt(i);
+            if (check == '@') {
+                arroba = true;
+            }
+            else if (check == '.') {
+                ponto = true;
+            }
+        }
+        if (ponto == true && arroba == true) {
+            ErroEmail.innerHTML = ' ';
+            return true;
+        }
+        else {
+            ErroEmail.innerHTML = ' Email invalido!';
+            ErroEmail.style = "color: red";
+            return false;
+        }
+    }
+    function verificarCheckbox() {
+        var ErroCheck = document.getElementById("ErroCheck");
+        var opcoes = document.cadastro.areasAt;
+        var qntMarcados = 0;
+        for (var i = 0; i < opcoes.length; i++) {
+            if (opcoes[i].checked) {
+                qntMarcados++;
+            }
+        }
+        if (qntMarcados < 1) {
+            ErroCheck.innerHTML = ' Selecione uma das opções!';
+            ErroCheck.style = "color: red";
+            return false;
+        } else {
+            ErroCheck.innerHTML = ' ';
+            return true;
+        }
+    }
+    function verificarSenha() {
+        var senha = document.getElementById("senha").value;
+        var senhaRepetida = document.getElementById("senhaRepetida").value;
+        var ErroSenha = document.getElementById("ErroSenha");
+        var ErroSenhaRep = document.getElementById("ErroSenhaRep");
+        if (senha.length >= 6) {
+            if (senha == senhaRepetida) {
+                ErroSenha.innerHTML = ' ';
+                ErroSenhaRep.innerHTML = ' ';
+                return true;
+            }
+            else {
+                ErroSenhaRep.innerHTML = ' Senhas diferentes!';
+                ErroSenhaRep.style = "color: red";
+                ErroSenha.innerHTML = ' ';
+                return false;
+            }
+        }
+        else {
+            ErroSenha.innerHTML = ' A senha precisa ter no minimo 6 caracteres!';
+            ErroSenha.style = "color: red";
+            ErroSenhaRep.innerHTML = ' ';
+            return false;
+        }
+    }
+</script>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+            </div>
+            <div class="col-lg-8 ">
+                <form method="POST" action="/cadastro" name="cadastro">
+                    <h2 class="section-heading mb-4 mt-4">Formulário de Cadastro</h2>
+                    <input type="hidden" name="id" id="id" th:value="${aluno.id}">
+                    <span id="ErroNome"></span>
+                    <input type="text" id="nome" class="form-control mb-4" name="nome" placeholder="Nome" required
+                        th:value="${aluno.nome}">
+
+                    <span id="ErroEmail"></span>
+                    <input type="email" id="email" class="form-control mb-4" name="email" placeholder="E-mail" required
+                        th:value="${aluno.email}">
+
+                    <span id="ErroCPF"></span>
+                    <input type="text" id="cpf" class="form-control mb-4" name="cpf" placeholder="CPF" required
+                        th:value="${aluno.cpf}">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="col-form-label col-sm-5 pt-0">Sexo:</label>
+                                <select class="browser-default custom-select mb-4 mdb-select md-form" name="sexo">
+                                    <option value="Masculino" th:selected="${aluno.sexo == 'Masculino'}">Masculino
+                                    </option>
+                                    <option value="Feminino" th:selected="${aluno.sexo == 'Feminino'}">Feminino</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <label class="col-form-label col-sm-5 pt-0">Módulo:</label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="primeiro" value="primeiro" name="modulo"
+                                    class="custom-control-input" checked th:checked="${aluno.modulo == 'primeiro'}">
+                                <label class="custom-control-label" for="primeiro">Primeiro</label>
+                            </div>
+
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="segundo" value="segundo" name="modulo"
+                                    class="custom-control-input" th:checked="${aluno.modulo == 'segundo'}">
+                                <label class="custom-control-label" for="segundo">Segundo</label>
+                            </div>
+
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="terceiro" value="terceiro" name="modulo"
+                                    class="custom-control-input" th:checked="${aluno.modulo == 'terceiro'}">
+                                <label class="custom-control-label" for="terceiro">Terceiro</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="row">
+                                <span id="ErroCheck"></span>
+                            </div>
+                            <label class="col-form-label pt-0">Áreas de Atuação Preferidas:</label>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="1" name="areasAt"
+                                    value="programacao" th:checked="${#arrays.contains(aluno.areasAt, 'programacao')}">
+                                <label class="custom-control-label" for="1" >Programação</label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="2" name="areasAt" value="redes"
+                                th:checked="${#arrays.contains(aluno.areasAt, 'redes')}">
+                                <label class="custom-control-label" for="2" >Redes de Computadores</label>
+                            </div>
+
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="3" name="areasAt"
+                                    value="manutencao" th:checked="${#arrays.contains(aluno.areasAt, 'manutencao')}" >
+                                <label class="custom-control-label" for="3" >Manutenção de Computadores</label>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <span id="ErroSenhaRep"></span>
+                        </div>
+                    </div>
+
+                    <span id="ErroSenha"></span>
+                    <div class="form-row mt-4">
+                        <div class="col">
+
+                            <input type="password" id="senha" name="senha" class="form-control mb-4" placeholder="Senha"
+                                required th:value="${aluno.senha}">
+                        </div>
+
+                        <div class="col">
+                            <input type="password" id="senhaRepetida" class="form-control mb-4"
+                                placeholder="Repetir Senha" required th:value="${aluno.senha}">
+                        </div>
+
+                    </div>
+
+
+                    <button class="btn btn-info btn-lg" type="submit"
+                        onclick="verificarNome(); verificarCPF(); verificarCheckbox(); validarEmail(); verificarSenha();">Enviar</button>
+                    <button class="btn btn btn-secondary btn-md" type="reset">Limpar</button>
+                </form>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+</html>

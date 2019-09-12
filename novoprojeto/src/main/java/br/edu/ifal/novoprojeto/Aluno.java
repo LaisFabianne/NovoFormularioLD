@@ -1,5 +1,4 @@
 package br.edu.ifal.novoprojeto;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,14 +6,25 @@ import javax.persistence.Id;
 
 @Entity
 public class Aluno{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
     private String email;
-    private double cpf;
+    private String cpf;
+    private String sexo;
     private String modulo;
-    private String[] areas;
+    private String[] areasAt = {};
+    private String senha;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
@@ -32,14 +42,21 @@ public class Aluno{
         this.email = email;
     }
 
-    public double getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(double cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
 
     public String getModulo() {
         return modulo;
@@ -49,36 +66,32 @@ public class Aluno{
         this.modulo = modulo;
     }
 
-    public String[] getAreas() {
-        return areas;
+    public String[] getAreasAt(){
+        return areasAt;
     }
 
-    public String getAreasPorString(){
-        String ret = "";
-        for (String var : areas) {
-            ret = ret + var + ",";
+    public String getDadosAreasAt() {
+        String ref="";
+
+        for (String  ref1 : areasAt) {
+            ref += ref1 + " , ";
         }
-        return ret;
+
+        return ref;
     }
 
-    public void setAreas(String[] areas) {
-        this.areas = areas;
+    public void setAreasAt(String[] areasAt) {
+        this.areasAt = areasAt;
     }
 
-	public String getTodosCampos() {
-		return nome + ", " + email + ", " + modulo + ", " + getAreasPorString();
-	}
-
-    @Override
-    public String toString() {
-        return getTodosCampos();
-    }
-   
-    public Long getId() {
-        return id;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
+
+    
+    
 }
